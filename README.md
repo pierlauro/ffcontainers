@@ -30,3 +30,4 @@ Containers successfully imported
 ## TODO
 - Custom Mozilla Firefox installation paths
 - Automatic check extension's version
+- Incremental update of containers
