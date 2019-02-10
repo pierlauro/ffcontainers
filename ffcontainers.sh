@@ -1,6 +1,5 @@
 #! /bin/bash
 
-
 ## Multi-container extension paths
 BASEPATH=~/.mozilla/firefox
 CONTAINERS_FILE="containers.json"
@@ -8,8 +7,8 @@ STORAGE_PATH="browser-extension-data/@testpilot-containers/"
 STORAGE_FILE="storage.js"
 
 USAGE="Usage:
-Export to zip  \t\tfirefox-multi-account-sync export
-Import from zip\t\tfirefox-multi-account-sync import [nameofthezip]"
+Export to zip  \t\t./ffcontainers.sh export
+Import from zip\t\t./ffcontainers.sh import [nameofthezip]"
 
 FIREFOX_PROFILES=$(ls $BASEPATH/*.default/$CONTAINERS_FILE)
 NUMBER_FIREFOX_PROFILES=$(wc -w <<< $FIREFOX_PROFILES)
@@ -42,7 +41,7 @@ export_containers(){
 		PROFILE=$(cut -d '/' -f 6 <<< $FIREFOX_PROFILES)
 	fi
 
-	OUTPUT_FILE="multicontainer-$PROFILE-$DATE.zip"
+	OUTPUT_FILE="ffcontainers-$PROFILE-$DATE.zip"
 	zip -j $OUTPUT_FILE "$BASEPATH/$PROFILE/$CONTAINERS_FILE" "$BASEPATH/$PROFILE/$STORAGE_PATH/$STORAGE_FILE"
 	echo -e "Containers successfully exported in:\t \033[1m$OUTPUT_FILE\033[0m"
 }
@@ -72,6 +71,8 @@ import_containers(){
 	mv "$TMP_DIR/$CONTAINERS_FILE" "$BASEPATH/$PROFILE/$CONTAINERS_FILE"
 	mv "$TMP_DIR/$STORAGE_FILE" "$BASEPATH/$PROFILE/$STORAGE_PATH/$STORAGE"
 	rmdir $TMP_DIR
+	
+	echo -e "Containers successfully imported in profile $PROFILE"
 }
 
 if [[ "$1" == "export" ]]; then
