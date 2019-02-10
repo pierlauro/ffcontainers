@@ -1,6 +1,6 @@
 # Export/Import Firefox Multi-Account Containers
 
-This bash script allows to export and import container configurations (tabs + websites preferences).
+This bash script allows to synchronize Firefox containers among different machines.
 
 Note: the script is currently working just with the updated version of [Firefox Multi-Account Containers](https://addons.mozilla.org/es/firefox/addon/multi-account-containers/)
 
