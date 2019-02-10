@@ -19,14 +19,14 @@ $ ./ffcontainers import ffcontainers-PROFILE-20190210.zip
 Containers successfully imported
 ```
 
-# Dependencies
+## Dependencies
 - [zip](www.info-zip.org)
 - [jq](https://stedolan.github.io/jq/) - needed just in case of multiple profiles in Mozilla Firefox
 
-# Supported
+## Supported
 - Standard Mozilla Firefox installation path
 - Multi-profile installations
 
-# TODO
+## TODO
 - Custom Mozilla Firefox installation paths
 - Automatic check on browser's version
