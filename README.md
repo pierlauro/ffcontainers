@@ -25,7 +25,7 @@ Containers successfully imported
 
 ## Supported
 - Standard Mozilla Firefox installation path
-- Multi-profile installations
+- Multi-profile installations ([including more versions of Firefox on the same machine](https://github.com/pierlauro/ffcontainers/issues/1))
 
 ## TODO
 - Custom Mozilla Firefox installation paths
