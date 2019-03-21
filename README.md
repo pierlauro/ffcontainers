@@ -1,40 +1,43 @@
 # Export/Import Firefox Multi-Account Containers
 
-This bash script allows to synchronize Firefox containers among different machines.
+This bash script allows to synchronize [Firefox Multi-Account Containers](https://addons.mozilla.org/es/firefox/addon/multi-account-containers/) among different machines.
 
-Note: the script is currently working just with the updated version of [Firefox Multi-Account Containers](https://addons.mozilla.org/es/firefox/addon/multi-account-containers/)
+It provides two ways of performing synchronization:
+- Network-based: uses [Firefox Send](https://send.firefox.com)
+- No-Network: produces an archive to manually move between machines
 
 # Usage
 
-## Using files
-### Export containers
-
-```
-$ ./ffcontainers export
-Containers successfully exported in:	 ffcontainers-PROFILE-20190210.zip
-```
-
-### Import containers
-
-```
-$ ./ffcontainers import ffcontainers-PROFILE-20190210.zip
-Containers successfully imported
-```
-
-## Using Firefox Send
+### Using Firefox Send
 The link produced when exported the containers will be accessible for 24 hours.
 
-### Export containers
+#### Export containers
 
 ```
 $ ./ffcontainers fsexport
 Containers successfully exported in:	 http://send.firefox.com/randomString
 ```
 
-### Import containers
+#### Import containers
 
 ```
 $ ./ffcontainers fsimport http://send.firefox.com/randomString
+Containers successfully imported
+```
+
+
+### Using files
+#### Export containers
+
+```
+$ ./ffcontainers export
+Containers successfully exported in:	 ffcontainers-PROFILE-20190210.zip
+```
+
+#### Import containers
+
+```
+$ ./ffcontainers import ffcontainers-PROFILE-20190210.zip
 Containers successfully imported
 ```
 
@@ -43,7 +46,7 @@ Containers successfully imported
 - [jq](https://stedolan.github.io/jq/) - needed just in case of multiple profiles in Mozilla Firefox
 - [ffsend](https://github.com/timvisee/ffsend) - needed just in case you want to export/import by using [Firefox Send](https://send.firefox.com/)
 
-## Supported
+## Supported features
 - Standard Mozilla Firefox installation path
 - Multi-profile installations ([including more versions of Firefox on the same machine](https://github.com/pierlauro/ffcontainers/issues/1))
 
