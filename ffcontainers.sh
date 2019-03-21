@@ -47,11 +47,11 @@ export_containers(){
 	fi
 
 	OUTPUT_FILE="ffcontainers-$PROFILE-$DATE.zip"
-	zip -j $OUTPUT_FILE "$BASEPATH/$PROFILE/$CONTAINERS_FILE" "$BASEPATH/$PROFILE/$STORAGE_PATH/$STORAGE_FILE"
+	zip -q -j $OUTPUT_FILE "$BASEPATH/$PROFILE/$CONTAINERS_FILE" "$BASEPATH/$PROFILE/$STORAGE_PATH/$STORAGE_FILE"
 
 	echo -n "Containers successfully exported in: "
 	if [[ $USE_FFSEND -eq 0 ]]; then
-		URI='https'$(ffsend --no-interact upload $OUTPUT_FILE 2>&1 | cut -d ':' -f3)
+		URI='https:'$(ffsend --no-interact upload $OUTPUT_FILE 2>&1 | cut -d ':' -f3)
 		OUTPUT_FILE=$URI
 	fi
 	echo -e "\033[1m$OUTPUT_FILE\033[0m"
@@ -64,10 +64,10 @@ import_containers(){
 	mkdir $TMP_DIR
 
 	if [[ $USE_FFSEND -eq 0 ]]; then
-		pushd $TMP_DIR
-		ffsend download $INPUT_FILE
+		pushd $TMP_DIR > /dev/null
+		ffsend --no-interact download $INPUT_FILE
 		INPUT_FILE=$PWD/$(ls)
-		popd
+		popd > /dev/null
 	fi
 
 	if [[ $NUMBER_FIREFOX_PROFILES -gt 1 ]]; then
@@ -88,7 +88,7 @@ import_containers(){
 		PROFILE=$(cut -d '/' -f 6 <<< $FIREFOX_PROFILES)
 	fi
 
-	unzip $INPUT_FILE -d $TMP_DIR
+	unzip -q $INPUT_FILE -d $TMP_DIR
 	mv "$TMP_DIR/$CONTAINERS_FILE" "$BASEPATH/$PROFILE/$CONTAINERS_FILE"
 	mv "$TMP_DIR/$STORAGE_FILE" "$BASEPATH/$PROFILE/$STORAGE_PATH/$STORAGE"
 	rm -r $TMP_DIR
