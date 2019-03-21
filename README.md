@@ -5,6 +5,8 @@ This bash script allows to synchronize Firefox containers among different machin
 Note: the script is currently working just with the updated version of [Firefox Multi-Account Containers](https://addons.mozilla.org/es/firefox/addon/multi-account-containers/)
 
 # Usage
+
+## Using files
 ### Export containers
 
 ```
@@ -19,9 +21,27 @@ $ ./ffcontainers import ffcontainers-PROFILE-20190210.zip
 Containers successfully imported
 ```
 
+## Using Firefox Send
+The link produced when exported the containers will be accessible for 24 hours.
+
+### Export containers
+
+```
+$ ./ffcontainers fsexport
+Containers successfully exported in:	 http://send.firefox.com/randomString
+```
+
+### Import containers
+
+```
+$ ./ffcontainers fsimport http://send.firefox.com/randomString
+Containers successfully imported
+```
+
 ## Dependencies
 - [zip](www.info-zip.org)
 - [jq](https://stedolan.github.io/jq/) - needed just in case of multiple profiles in Mozilla Firefox
+- [ffsend](https://github.com/timvisee/ffsend) - needed just in case you want to export/import by using [Firefox Send](https://send.firefox.com/)
 
 ## Supported
 - Standard Mozilla Firefox installation path
