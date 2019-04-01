@@ -1,10 +1,11 @@
 #! /bin/bash
 
 ## Multi-container extension paths
-BASEPATH=~/.mozilla/firefox
+BASEPATH=~/.mozilla/firefox/
+#BASEPATH=/tmp/profile0/
 CONTAINERS_FILE="containers.json"
-STORAGE_PATH="browser-extension-data/@testpilot-containers/"
-STORAGE_FILE="storage.js"
+PREFS_FILE="prefs.js"
+CONTAINERS_PREFS_IDENTIFIER='\\"@testpilot-containers\\":\\"'
 
 USAGE="Usage:
 ---- Using files
@@ -40,14 +41,17 @@ export_containers(){
 			let i=i+1
 		done
 		read i
-		PROFILE=$( cut -d ' ' -f $i <<< $FIREFOX_PROFILES | cut -d '/' -f 6)
+		PROFILE=$(cut -d ' ' -f $i <<< $FIREFOX_PROFILES | rev | cut -d '/' -f 2 | rev)
 	else
 		## Mono-profile Firefox
-		PROFILE=$(cut -d '/' -f 6 <<< $FIREFOX_PROFILES)
+		PROFILE=$(rev <<< $FIREFOX_PROFILES | cut -d '/' -f 2 | rev)
 	fi
 
+	ADDON_ID=$(grep $CONTAINERS_PREFS_IDENTIFIER $BASEPATH/$PROFILE/$PREFS_FILE | sed "s/.*$CONTAINERS_PREFS_IDENTIFIER//g" | cut -d '\' -f1)
+	STORAGE_PATH_PREFIX="storage/default/moz-extension+++$ADDON_ID"
+
 	OUTPUT_FILE="ffcontainers-$PROFILE-$DATE.zip"
-	zip -q -j $OUTPUT_FILE "$BASEPATH/$PROFILE/$CONTAINERS_FILE" "$BASEPATH/$PROFILE/$STORAGE_PATH/$STORAGE_FILE"
+	zip -q -j $OUTPUT_FILE "$BASEPATH/$PROFILE/$CONTAINERS_FILE" $BASEPATH/$PROFILE/$STORAGE_PATH_PREFIX*/idb/*sqlite
 
 	echo -n "Containers successfully exported in: "
 	if [[ $USE_FFSEND -eq 0 ]]; then
@@ -61,7 +65,7 @@ import_containers(){
 	USE_FFSEND=$1
 	INPUT_FILE=$2
 	TMP_DIR=".tmpdir"
-	mkdir $TMP_DIR
+	mkdir -p $TMP_DIR
 
 	if [[ $USE_FFSEND -eq 0 ]]; then
 		pushd $TMP_DIR > /dev/null
@@ -82,15 +86,18 @@ import_containers(){
 			let i=i+1
 		done
 		read i
-		PROFILE=$( cut -d ' ' -f $i <<< $FIREFOX_PROFILES | cut -d '/' -f 6)
+		PROFILE=$(cut -d ' ' -f $i <<< $FIREFOX_PROFILES | rev | cut -d '/' -f 2 | rev)
 	else
 		## Mono-profile Firefox
-		PROFILE=$(cut -d '/' -f 6 <<< $FIREFOX_PROFILES)
+		PROFILE=$(rev <<< $FIREFOX_PROFILES | cut -d '/' -f 2 | rev)
 	fi
+
+	ADDON_ID=$(grep $CONTAINERS_PREFS_IDENTIFIER $BASEPATH/$PROFILE/$PREFS_FILE | sed "s/.*$CONTAINERS_PREFS_IDENTIFIER//g" | cut -d '\' -f1)
+	STORAGE_PATH_PREFIX="storage/default/moz-extension+++$ADDON_ID"
 
 	unzip -q $INPUT_FILE -d $TMP_DIR
 	mv "$TMP_DIR/$CONTAINERS_FILE" "$BASEPATH/$PROFILE/$CONTAINERS_FILE"
-	mv "$TMP_DIR/$STORAGE_FILE" "$BASEPATH/$PROFILE/$STORAGE_PATH/$STORAGE"
+	mv $TMP_DIR/*sqlite $BASEPATH/$PROFILE/$STORAGE_PATH_PREFIX*/idb/*sqlite
 	rm -r $TMP_DIR
 	
 	echo -e "Containers successfully imported in profile $PROFILE"
