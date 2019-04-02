@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ## Multi-container extension paths
-BASEPATH=~/.mozilla/firefox/
+BASEPATH=~/.mozilla/firefox
 #BASEPATH=/tmp/profile0/
 CONTAINERS_FILE="containers.json"
 PREFS_FILE="prefs.js"
@@ -15,7 +15,7 @@ Import from zip             \t\t./ffcontainers.sh import [nameOfTheZip]
 Export to Firefox Send URI  \t\t./ffcontainers.sh fsexport
 Import from Firefox Send URI\t\t./ffcontainers.sh fsimport [firefoxSendURI]"
 
-FIREFOX_PROFILES=$(ls $BASEPATH/*.default/$CONTAINERS_FILE)
+FIREFOX_PROFILES=$(ls $BASEPATH/*.default*/$CONTAINERS_FILE)
 NUMBER_FIREFOX_PROFILES=$(wc -w <<< $FIREFOX_PROFILES)
 if [[ -z $NUMBER_FIREFOX_PROFILES ]]; then
 	echo "ERROR: no Firefox installation detected on this system"
