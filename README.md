@@ -1,3 +1,8 @@
+
+## Due to the recent [Firefox 66 update](https://www.ghacks.net/2019/03/19/firefox-66-0-release-information/) moving json storage to IndexedDB, the plugin is currently unstable. Please, refer to [this issue](https://github.com/pierlauro/ffcontainers/issues/3) to check the current state of development.
+
+------------
+
 # Export/Import Firefox Multi-Account Containers
 
 This bash script allows to synchronize [Firefox Multi-Account Containers](https://addons.mozilla.org/es/firefox/addon/multi-account-containers/) among different machines.
